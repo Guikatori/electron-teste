@@ -23,6 +23,21 @@ const createWindow = () => {
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 };
+const {Tray, Menu, nativeImage } = require('electron')
+
+let tray
+
+app.whenReady().then(() => {
+  const icon = nativeImage.createFromDataURL('159684.png')
+  tray = new Tray(icon)
+
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Item', type: 'radio', checked: true },
+  ])
+
+  tray.setToolTip('Suncall')
+  tray.setContextMenu(contextMenu)
+})
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -47,6 +62,5 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
-
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
