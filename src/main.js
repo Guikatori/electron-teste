@@ -23,21 +23,40 @@ const createWindow = () => {
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 };
-const {Tray, Menu, nativeImage } = require('electron')
 
-let tray
+const { Tray, Menu, nativeImage } = require('electron');
+let tray;
 
 app.whenReady().then(() => {
-  const icon = nativeImage.createFromDataURL('159684.png')
-  tray = new Tray(icon)
+  const iconPath = 'C:\\Users\\guilherme.catori\\Desktop\\electron\\voipTemplateServer\\my-app\\src\\suncall.ico';
+  const icon = nativeImage.createFromPath(iconPath);
+  if (!icon.isEmpty()) {
+    console.log('Ícone carregado com sucesso!');
+  } else {
+    console.error('Erro: Ícone não pôde ser carregado.');
+  }
 
+  // Criar o Menu Contextual
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Item', type: 'radio', checked: true },
-  ])
+  ]
+);
 
-  tray.setToolTip('Suncall')
-  tray.setContextMenu(contextMenu)
-})
+  // Criar o Tray com o ícone
+  tray = new Tray(icon);
+  tray.setToolTip('Suncall');
+  tray.setContextMenu(contextMenu);
+
+  // Definir o evento de clique
+  tray.on('click', (event, bounds, position) => {
+    console.log('Evento de clique no ícone da bandeja!');
+    console.log('Evento:', event);
+    console.log('Limites:', bounds); // { x, y, width, height }
+    console.log('Posição:', position); // { x, y }
+    console.log('Caminho do ícone:', iconPath);
+    // Adicionar lógica do reopen aqui
+  });
+});
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
